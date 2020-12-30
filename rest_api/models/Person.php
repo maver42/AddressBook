@@ -2,7 +2,7 @@
 class Person {
     //DB conn
     private $conn;
-    private $table = "myaddressbook";
+    private $table = "myaddressbook"; //popravi v primeru drugačnega poimenovanja na lastnem serverju
 
     //person properties
     public $id;

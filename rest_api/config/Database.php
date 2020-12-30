@@ -2,9 +2,9 @@
 class Database{
     //DB properties
     private $host = 'localhost';
-    private $db_name = 'mydatabase';
-    private $username = 'user';
-    private $password = 'password';
+    private $db_name = 'mydatabase'; //popravi v primeru drugačnega poimenovanja na lastnem serverju
+    private $username = 'user'; //popravi v primeru drugačnega poimenovanja na lastnem serverju
+    private $password = 'password'; //popravi v primeru drugačnega poimenovanja na lastnem serverju
     private $conn;
 
     //DB Connect
