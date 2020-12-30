@@ -79,4 +79,34 @@ class Person {
         return false;
     }
 
+    //Update new person
+    public function update(){
+        $query = 'UPDATE ' . $this->table . ' SET firstname = :firstname, lastname = :lastname, mail = :mail, phone = :phone WHERE id = :id';
+
+        $stmt = $this->conn->prepare($query);
+
+        //clean input
+        $this->firstname = htmlspecialchars(strip_tags($this->firstname));
+        $this->lastname = htmlspecialchars(strip_tags($this->lastname));
+        $this->mail = htmlspecialchars(strip_tags($this->mail));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //bind data
+        $stmt->bindParam(':firstname', $this->firstname);
+        $stmt->bindParam(':lastname', $this->lastname);
+        $stmt->bindParam(':mail', $this->mail);
+        $stmt->bindParam(':phone', $this->phone);
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+
+        //in case smth goes south
+        printf("Error: %s. \n", $stmt->error);
+
+        return false;
+    }
+
 }
