@@ -35,7 +35,6 @@
                 'phone' => $phone
             );
 
-
             //Push to "data
             array_push($people['data'], $person_col);
         }
