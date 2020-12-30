@@ -109,4 +109,26 @@ class Person {
         return false;
     }
 
+    //delete person
+    public function delete(){
+        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+        $stmt = $this->conn->prepare($query);
+
+        //clean input
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //bind id
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+
+        //in case smth goes south
+        printf("Error: %s. \n", $stmt->error);
+
+        return false;
+    }
+
 }
