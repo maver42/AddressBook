@@ -16,7 +16,7 @@ class Person {
         $this->conn = $db;
     }
 
-    //GET perople
+    //GET all records
     public function read(){
         //query
         $query = 'SELECT * FROM ' . $this->table;
