@@ -58,6 +58,8 @@ _________
 http://localhost/AddressBook/index.html
 
 TODO:
--Form validation
--Bug: on modal close page _Navigates to http://localhost/AddressBook/index.html?_ Don't know why
+ - Show message on success/error
+ - Form validation
+ - Bug: on modal close triggers page _Navigates to http://localhost/AddressBook/index.html?_ ...don't know why
+ - Pagination mabye?
 
