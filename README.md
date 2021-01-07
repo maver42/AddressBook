@@ -8,8 +8,8 @@ DB neded:
  - user: user (rest_api/config/Database.php)
  - password: user (rest_api/config/Database.php)
  
-*In case of diferent settings, change in appropriate files
-few tabel data in myaddressbook.sql*
+*In case of diferent settings, change in appropriate files.
+Few tabel data in myaddressbook.sql*
 
 ### GET (read)
 get all:
