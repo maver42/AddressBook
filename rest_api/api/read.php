@@ -26,7 +26,7 @@ if (!isset($_GET['id'])) { // ne sme bit vpisan id
     if ($num > 0) {
         //person array
         $people = array();
-        $people['data'] = array();
+        $people = array();
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row); //zato da ne treba pisati $row['title']
@@ -40,7 +40,7 @@ if (!isset($_GET['id'])) { // ne sme bit vpisan id
             );
 
             //Push to "data
-            array_push($people['data'], $person_col);
+            array_push($people, $person_col);
         }
 
         //convert to json

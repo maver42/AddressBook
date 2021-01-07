@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Address book</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <br />
+
+        <div class="alert alert-primary" role="alert">
+            <h1>Real simpl Address Book</h1>
+        </div>
+
+        <button class="btn btn-info mb-2" id="getData">Get People <i class="far fa-address-book"></i></button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-success mb-2" id="showForm">Add Person <i class="fas fa-user-plus"></i></button>
+
+        <div id="output"></div>
+
+        <div id="formDiv" style="display:none;">
+            <form id="addPerson" class="form-inline m-3">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                    <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                    <input type="mail" class="form-control" id="mail" placeholder="email">
+                    <input type="text" class="form-control" id="phone" placeholder="phone">
+                    <input type="submit" class="btn btn-success" value="Submit">
+                </div>
+            </form>
+        </div>
+
+
+        <div id="tabel"></div>
+
+        <div id="updateForm" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Posodobi osebo</h3>
+                    <span class="close">&times;</span>
+
+                </div>
+                <div class="modal-body" id="upForm">
+
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('getData').addEventListener('click', getData);
+            document.getElementById('showForm').addEventListener('click', showForm);
+            document.getElementById('addPerson').addEventListener('submit', addPerson);
+
+
+            function getData() {
+                fetch('http://localhost/AddressBook/rest_api/api/read.php')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        // document.getElementById('output').innerHTML = JSON.stringify(data);
+                        let output = `<table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Ime</th>
+                                            <th scope="col">Priimek</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Telephone</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                        data.forEach(function (user) {
+                            output += `
+                            <tr>
+                                <td> ${user.id}</td>
+                                <td> ${user.firstname} </td>
+                                <td> ${user.lastname} </td>
+                                <td> ${user.mail}</td>
+                                <td> ${user.phone} </td>
+                                <td> 
+                                    <button class="btn btn-warning" onClick="getPersonById(${user.id}, 'UPDATE')"><i class="fas fa-user-edit"></i></button>  &nbsp;
+                                    <button class="btn btn-danger" onClick="getPersonById(${user.id}, 'DELETE')"><i class="fas fa-trash-alt"></i></button></td>
+                            
+                            </tr>
+                        `
+                        });
+                        output += `</tbody></table>`
+                        document.getElementById('tabel').innerHTML = output;
+                    })
+            }
+
+            function showForm() {
+                let form = document.getElementById('formDiv')
+                if (form.style.display === "none") {
+                    form.style.display = "block";
+                } else {
+                    form.style.display = "none";
+                }
+
+            }
+
+
+            function addPerson(e) {
+                // prevent auto submiting
+                e.preventDefault();
+
+                let firstname = document.getElementById('firstname').value;
+                let lastname = document.getElementById('lastname').value;
+                let mail = document.getElementById('mail').value;
+                let phone = document.getElementById('phone').value;
+
+                // console.log(`form values: ${firstname} ${lastname} ${mail} ${phone}`);
+                //TODO: VALIDATE FORM
+                fetch('http://localhost/AddressBook/rest_api/api/create.php', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ "firstname": firstname, "lastname": lastname, "mail": mail, "phone": phone })
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data);
+                        document.getElementById("addPerson").reset();
+                        //TODO: SHOW MESSAGE PERSON CREATED
+
+                        //posodobi seznam
+                        return getData();
+                    })
+            }
+
+            function updatePersonModal(person) {
+                // console.log("update");
+                // console.log('person: ' + JSON.stringify(person));
+                var modal = document.getElementById("updateForm");
+                var span = document.getElementsByClassName("close")[0];
+
+                // prikaži modal
+                modal.style.display = "block";
+                //zapri modal
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+                // //zapri če se klikne kjer koli izven modala
+                // window.onclick = function (event) {
+                //     if (event.target == modal) {
+                //         modal.style.display = "none";
+                //     }
+                // }
+
+                let updateForm =
+                    `<form id="updatePerson">
+                    <div class="form-row mb-3  d-flex justify-content-center">
+                        <div class="col-sm-1">
+                            <label>ID</label>
+                            <input type="text" class="form-control" id="formId" placeholder="ID" value="${person.id}" disabled>
+                        </div>
+                        <div class="col-sm-2">
+                            <label>First name</label>
+                            <input type="text" class="form-control" id="formFirstname" placeholder="First Name" value="${person.firstname}">
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Last name</label>
+                            <input type="text" class="form-control" id="formLastname" placeholder="Last Name" value="${person.lastname}">
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Email</label>
+                            <input type="mail" class="form-control" id="formMail" placeholder="email" value="${person.mail}">
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Phone</label>
+                            <input type="text" class="form-control" id="formPhone" placeholder="phone" value="${person.phone}">
+                       </div>
+                    </div>
+                    <div class="form-row d-flex justify-content-center">
+                        
+                        <div class="col-sm-12 text-center">
+                            <button class="btn btn-success" id="ubdatePersonForm" onClick="updatePerson1()">Posodobi</button>
+                        </div>
+                        
+                    </div>
+                </form>
+                    `
+
+                document.getElementById('upForm').innerHTML = updateForm;
+                // form.style.display = "absolute";
+
+            }
+
+            function updatePerson1() {
+        
+                // console.log("modal click");
+
+                let id = document.getElementById('formId').value;
+                let firstname = document.getElementById('formFirstname').value;
+                let lastname = document.getElementById('formLastname').value;
+                let mail = document.getElementById('formMail').value;
+                let phone = document.getElementById('formPhone').value;
+
+                // console.log(`form values: ${id} ${firstname} ${lastname} ${mail} ${phone}`);
+
+                //TODO: VALIDATE FORM
+
+                fetch('http://localhost/AddressBook/rest_api/api/update.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ "id": id, "firstname": firstname, "lastname": lastname, "mail": mail, "phone": phone })
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data);
+
+                        //TODO: SHOW MESSAGE PERSON UPDATED
+
+                        //FIXME:posodobi seznam 
+                        return getData();
+                    })
+
+            }
+                
+
+            function deletePerson(person) {
+                // console.log("delete");
+                // console.log('person: ' + JSON.stringify(person));
+                var delPerson = confirm(`Ste prepričani da želite izbrisati osebo: \n
+                    ${person.firstname} ${person.lastname} (ID: ${person.id}) `);
+
+                if (delPerson == true) {
+                    fetch('http://localhost/AddressBook/rest_api/api/delete.php', {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify({ "id": person.id })
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log(data);
+
+                            //TODO: SHOW MESSAGE PERSON DELETED
+
+                            //posodobi seznam
+                            return getData();
+                        })
+                }
+
+            }
+
+            function getPersonById(id, action) {
+                console.log("click");
+                fetch(`http://localhost/AddressBook/rest_api/api/read.php?id=${id}`)
+                    .then((response) => response.json())
+                    .then((person) => {
+                        console.log(person);
+
+                        if (action === 'UPDATE') {
+                            updatePersonModal(person);
+                        }
+                        if (action === 'DELETE') {
+                            deletePerson(person);
+                        }
+                    })
+
+            }
+
+
+        </script>
+        
+        
+
+    </div>
+
+</body>
+
+</html>
