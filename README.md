@@ -54,6 +54,10 @@ Body: { "id":"6" }
 
 _________
 
-#TODO:
-frontend
+## Frontend
+http://localhost/AddressBook/frontend/index.html
+
+TODO:
+-Form validation
+-Bug: on modal close page _Navigates to http://localhost/AddressBook/frontend/index.html?_ Don't know why
 
