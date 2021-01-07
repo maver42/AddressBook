@@ -55,9 +55,9 @@ Body: { "id":"6" }
 _________
 
 ## Frontend
-http://localhost/AddressBook/frontend/index.html
+http://localhost/AddressBook/index.html
 
 TODO:
 -Form validation
--Bug: on modal close page _Navigates to http://localhost/AddressBook/frontend/index.html?_ Don't know why
+-Bug: on modal close page _Navigates to http://localhost/AddressBook/index.html?_ Don't know why
 
