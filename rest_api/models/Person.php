@@ -43,8 +43,8 @@ class Person {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->id = $row['id'];
-        $this->firstName = $row['firstname'];
-        $this->lastName = $row['lastname'];
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
         $this->mail = $row['mail'];
         $this->phone = $row['phone'];
 
