@@ -14,27 +14,28 @@ Few tabel data in myaddressbook.sql*
 ### GET (read)
 get all:
 
-http://localhost/AddressBook/rest_api/api/read.php
+GET http://localhost/AddressBook/rest_api/api.php
 
 *returns: JSON array of all persons in DB*
 
 get by ID:
 
-http://localhost/AddressBook/rest_api/api/read.php?id=2
+GET http://localhost/AddressBook/rest_api/api.php?id=2
 
 *returns: JSON of person with id=2*
 
 ### POST (create)
-http://localhost/AddressBook/rest_api/api/create.php
+POST http://localhost/AddressBook/rest_api/api.php
 
 Headers: Content-Type: application/json
 
 Body: {	"firstname": "Alan",	"lastname": "Turing",	"mail": "turing@machine.uk",	"phone": "655214489" }
 
-*returns: {"message":"Person created"} if succesful*
+*returns: {"message":"Person created"} if succesful*   
+*{"message":"Incomplete data"} if some fields were left empty*
 
 ### PUT (update)
-http://localhost/AddressBook/rest_api/api/update.php
+PUT http://localhost/AddressBook/rest_api/api.php
 
 Headers: Content-Type: application/json
 
@@ -43,7 +44,7 @@ Body: { "id":"6","firstname":"Nala","lastname":"Gnirut","mail":"turing@machine.u
 *returns: {"message":"Person updated"} if succesful*
 
 ### DELETE (delete)
-http://localhost/AddressBook/rest_api/api/delete.php
+DELETE http://localhost/AddressBook/rest_api/api.php
 
 Headers: Content-Type: application/json
 
