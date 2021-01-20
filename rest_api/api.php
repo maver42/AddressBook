@@ -129,13 +129,24 @@ if ($Method == 'PUT') {
     //get raw posted data
     $data = json_decode(file_get_contents("php://input"));
 
+    if(!isset($data->id)){
+        echo json_encode(
+            array('message' => 'Error ID missing')
+        );
+        die();
+    }
+
     //set ID to update
     $person->id = $data->id;
 
-    $person->firstname = $data->firstname;
-    $person->lastname = $data->lastname;
-    $person->mail = $data->mail;
-    $person->phone = $data->phone;
+    //najdi prejsnje vrednosti
+    $person->readById();
+
+    //ce so vrednosti podane jih posodobi, drugace obdrzi stare
+    $person->firstname = isset($data->firstname) ?  $data->firstname : $person->firstname;
+    $person->lastname = isset($data->lastname) ? $data->lastname : $person->lastname;
+    $person->mail = isset($data->mail) ? $data->mail : $person->mail;
+    $person->phone = isset($data->phone) ? $data->phone:  $person->phone;
 
     //update person
     if ($person->update()) {
