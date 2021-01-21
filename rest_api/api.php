@@ -37,7 +37,7 @@ if ($Method == 'GET') {
         if ($num > 0) {
             //person array
             $people = array();
-            $people = array();
+            
 
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 extract($row); //zato da ne treba pisati $row['title']

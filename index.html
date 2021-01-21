@@ -4,9 +4,9 @@
 <head>
     <title>Address book</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -60,7 +60,7 @@
 
 
             function getData() {
-                fetch('http://localhost/AddressBook/rest_api/api/read.php')
+                fetch('http://localhost/AddressBook/rest_api/api.php')
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data);
@@ -119,7 +119,7 @@
 
                 // console.log(`form values: ${firstname} ${lastname} ${mail} ${phone}`);
                 //TODO: VALIDATE FORM
-                fetch('http://localhost/AddressBook/rest_api/api/create.php', {
+                fetch('http://localhost/AddressBook/rest_api/api.php', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
@@ -210,7 +210,7 @@
 
                 //TODO: VALIDATE FORM
 
-                fetch('http://localhost/AddressBook/rest_api/api/update.php', {
+                fetch('http://localhost/AddressBook/rest_api/api.php', {
                     method: 'PUT',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
@@ -238,7 +238,7 @@
                     ${person.firstname} ${person.lastname} (ID: ${person.id}) `);
 
                 if (delPerson == true) {
-                    fetch('http://localhost/AddressBook/rest_api/api/delete.php', {
+                    fetch('http://localhost/AddressBook/rest_api/api.php', {
                         method: 'DELETE',
                         headers: {
                             'Accept': 'application/json, text/plain, */*',
@@ -261,7 +261,7 @@
 
             function getPersonById(id, action) {
                 console.log("click");
-                fetch(`http://localhost/AddressBook/rest_api/api/read.php?id=${id}`)
+                fetch(`http://localhost/AddressBook/rest_api/api.php?id=${id}`)
                     .then((response) => response.json())
                     .then((person) => {
                         console.log(person);
